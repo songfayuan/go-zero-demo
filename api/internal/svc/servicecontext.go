@@ -2,7 +2,6 @@ package svc
 
 import (
 	"context"
-	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/zrpc"
 	"go-zero-demo/api/internal/config"
 	"go-zero-demo/rpc/sys/sys"
@@ -13,23 +12,13 @@ import (
 type ServiceContext struct {
 	Config config.Config
 
-	Sys   sys.Sys
-	Redis *redis.Redis
+	Sys sys.Sys
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
-	newRedis := redis.New(c.Redis.Address, redisConfig(c))
 	return &ServiceContext{
 		Config: c,
 		Sys:    sys.NewSys(zrpc.MustNewClient(c.SysRpc, zrpc.WithUnaryClientInterceptor(interceptor))),
-		Redis:  newRedis,
-	}
-}
-
-func redisConfig(c config.Config) redis.Option {
-	return func(r *redis.Redis) {
-		r.Type = redis.NodeType
-		r.Pass = c.Redis.Pass
 	}
 }
 

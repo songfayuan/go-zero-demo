@@ -28,9 +28,6 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 }
 
 func (l *UserInfoLogic) UserInfo() (*types.UserInfoResp, error) {
-	//这里的key和生成jwt token时传入的key一致
-	//userId, _ := l.ctx.Value(cache.JwtFieldUserId).(json.Number).Int64()
-
 	var userId int64 = 1
 	resp, err := l.svcCtx.Sys.UserInfo(l.ctx, &sysclient.InfoReq{
 		UserId: userId,
@@ -83,7 +80,6 @@ func (l *UserInfoLogic) UserInfo() (*types.UserInfoResp, error) {
 		MenuTreeVue = make([]*types.ListMenuTreeVue, 0)
 	}
 
-	err = l.svcCtx.Redis.Set(strconv.FormatInt(userId, 10), strings.Join(resp.BackgroundUrls, ","))
 	if err != nil {
 		logx.Errorf("设置用户：%s, 权限到Redis异常：%+v", resp.Name, err)
 	}

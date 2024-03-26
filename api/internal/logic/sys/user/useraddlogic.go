@@ -33,7 +33,6 @@ func (l *UserAddLogic) UserAdd(req *types.AddUserReq) (resp *types.AddUserResp, 
 		Email:    req.Email,
 		RoleId:   req.RoleId,
 		Status:   req.Status,
-		//CreateBy: l.ctx.Value(cache.JwtFieldUserName).(string),
 		CreateBy: "songfayuan",
 	})
 

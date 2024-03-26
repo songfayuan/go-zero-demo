@@ -6,15 +6,6 @@ Timeout: 60000
 Mysql:
   Datasource: root:RQCGRJLCaVXN1iyc@tcp(192.168.2.204:3306)/dsms_admin?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
-CacheRedis:
-  - Host: 192.168.2.204:6379
-    Pass: qkgxChxNkCwK
-    Type: node
-
-Redis:
-  Address: 192.168.2.204:6379
-  Pass: qkgxChxNkCwK
-
 SysRpc:
   Timeout: 30000
   Etcd:

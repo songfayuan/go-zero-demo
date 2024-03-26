@@ -40,9 +40,6 @@ func (l *UserInfoLogic) UserInfo(in *sysclient.InfoReq) (*sysclient.InfoResp, er
 		return nil, err
 	}
 
-	//var list []*sys.MenuListTree
-	//var listUrls []string
-
 	return &sysclient.InfoResp{
 		Avatar:         "11111",
 		Name:           userInfo.Name,
