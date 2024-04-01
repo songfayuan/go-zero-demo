@@ -12,3 +12,11 @@ SysRpc:
     Hosts:
       - 192.168.2.204:2379
     Key: sysa.rpc
+
+Log:
+  #日志格式使用行模式
+  Encoding: plain
+  #日志时间显示格式
+  TimeFormat: 2006-01-02 15:04:05.000
+  # 关闭Stat
+  Stat: false

@@ -58,3 +58,20 @@ type AddUserResp struct {
 type ReceiptUserData struct {
 	Id int64 `json:"id"`
 }
+
+type ApiRedisReq struct {
+	Name     string `json:"name"`
+	NickName string `json:"nickName"`
+	Password string `json:"password,optional"`
+	Email    string `json:"email"`
+}
+
+type ApiRedisResp struct {
+	Code    int64       `json:"code"`
+	Message string      `json:"message"`
+	Data    ApiRedisReq `json:"data"`
+}
+
+type ApiRedisGetReq struct {
+	Key string `form:"key"`
+}

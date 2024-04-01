@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	redistest "go-zero-demo/api/internal/handler/redis/test"
 	sysuser "go-zero-demo/api/internal/handler/sys/user"
 	"go-zero-demo/api/internal/svc"
 
@@ -25,5 +26,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/sys/user"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/redisAdd",
+				Handler: redistest.RedisAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/redisDelete",
+				Handler: redistest.RedisDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/redisUpdate",
+				Handler: redistest.RedisUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/redisGet",
+				Handler: redistest.RedisGetHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/redis/test"),
 	)
 }

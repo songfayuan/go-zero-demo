@@ -1,0 +1,9 @@
+import "sys/user.api"
+import "redis/redis.api"
+
+info(
+	title : "Golang学习项目"
+	author: "songfayuan"
+	email: "songfayuan123@qq.com"
+	version: "1.0.0.0"
+)

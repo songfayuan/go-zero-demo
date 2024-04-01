@@ -8,6 +8,7 @@ require (
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/go-redsync/redsync/v4 v4.11.0
 	github.com/hibiken/asynq v0.24.1
+	github.com/jinzhu/copier v0.4.0
 	github.com/oschwald/geoip2-golang v1.9.0
 	github.com/redis/go-redis/v9 v9.4.0
 	github.com/tjfoc/gmsm v1.4.1
