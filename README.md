@@ -9,3 +9,8 @@
 教程博客地址：[go-zero整合单机版Redis并实现增删改查](https://blog.csdn.net/u011019141/article/details/137235129)
 
 教程源码分支：2.zero整合单机Redis
+
+### go-zero整合Kafka实现消息生产和消费
+教程博客地址：[go-zero整合Kafka实现消息生产和消费](https://blog.csdn.net/u011019141/article/details/138157030)
+
+教程源码分支：3.zero整合单机kafka
