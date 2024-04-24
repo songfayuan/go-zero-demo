@@ -52,3 +52,15 @@ func (s *SysServer) RedisGet(ctx context.Context, in *sysclient.RedisReq) (*sysc
 	l := logic.NewRedisGetLogic(ctx, s.svcCtx)
 	return l.RedisGet(in)
 }
+
+// Kafka生产者演示请求
+func (s *SysServer) KafkaProducer(ctx context.Context, in *sysclient.KafkaReq) (*sysclient.KafkaResp, error) {
+	l := logic.NewKafkaProducerLogic(ctx, s.svcCtx)
+	return l.KafkaProducer(in)
+}
+
+// Kafka消费者演示请求
+func (s *SysServer) KafkaConsumer(ctx context.Context, in *sysclient.Empty) (*sysclient.KafkaResp, error) {
+	l := logic.NewKafkaConsumerLogic(ctx, s.svcCtx)
+	return l.KafkaConsumer(in)
+}

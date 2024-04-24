@@ -57,6 +57,23 @@ message  RedisResp{
   string email = 4;
 }
 
+message KafkaReq{
+  string name = 1;
+  string nickName = 2;
+  string password = 3;
+  string email = 4;
+}
+
+message  KafkaResp{
+  string name = 1;
+  string nickName = 2;
+  string password = 3;
+  string email = 4;
+}
+
+message Empty {
+}
+
 service Sys{
   rpc UserInfo(InfoReq)returns(InfoResp);
   rpc UserAdd(UserAddReq)returns(UserAddResp);
@@ -65,4 +82,8 @@ service Sys{
   rpc RedisDelete(RedisReq)returns(RedisResp);
   rpc RedisUpdate(RedisReq)returns(RedisResp);
   rpc RedisGet(RedisReq)returns(RedisResp);
+  //Kafka生产者演示请求
+  rpc KafkaProducer(KafkaReq)returns(KafkaResp);
+  //Kafka消费者演示请求
+  rpc KafkaConsumer(Empty)returns(KafkaResp);
 }

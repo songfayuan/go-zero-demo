@@ -1,0 +1,41 @@
+syntax = "v1"
+
+info(
+	title: "Kafka生产消费案例演示"
+	desc: "Kafka生产消费案例演示"
+	author: "songfayuan"
+)
+
+type (
+	ApiKafkaReq {
+		Name     string `json:"name"`
+		NickName string `json:"nickName"`
+		Password string `json:"password"`
+		Email    string `json:"email"`
+	}
+
+	ApiKafkaResp {
+		Code    int64       `json:"code"`
+		Message string      `json:"message"`
+		Data    ApiKafkaReq `json:"data"`
+	}
+)
+
+@server (
+	group : kafka/test
+	prefix : /kafka/test
+)
+
+service admin-api{
+	@doc(
+		summary : "Kafka生产者演示"
+	)
+	@handler KafkaProducer
+	post /kafkaProducer(ApiKafkaReq)returns(ApiKafkaResp)
+
+	@doc (
+		summary :"Kafka消费者演示"
+	)
+	@handler KafkaConsumer
+	get /kafkaConsumer returns(ApiKafkaResp)
+}

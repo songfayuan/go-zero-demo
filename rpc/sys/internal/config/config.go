@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/zeromicro/go-zero/zrpc"
+	"go-zero-demo/common/task/kafkaconf"
 )
 
 type Config struct {
@@ -17,4 +18,6 @@ type Config struct {
 		Pass string `json:",optional"`
 		Tls  bool   `json:",optional"`
 	}
+
+	KafkaConf kafkaconf.Conf
 }

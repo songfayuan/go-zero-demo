@@ -13,8 +13,11 @@ import (
 )
 
 type (
+	Empty        = sysclient.Empty
 	InfoReq      = sysclient.InfoReq
 	InfoResp     = sysclient.InfoResp
+	KafkaReq     = sysclient.KafkaReq
+	KafkaResp    = sysclient.KafkaResp
 	MenuListTree = sysclient.MenuListTree
 	RedisReq     = sysclient.RedisReq
 	RedisResp    = sysclient.RedisResp
@@ -29,6 +32,10 @@ type (
 		RedisDelete(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
 		RedisUpdate(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
 		RedisGet(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
+		// Kafka生产者演示请求
+		KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error)
+		// Kafka消费者演示请求
+		KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error)
 	}
 
 	defaultSys struct {
@@ -71,4 +78,16 @@ func (m *defaultSys) RedisUpdate(ctx context.Context, in *RedisReq, opts ...grpc
 func (m *defaultSys) RedisGet(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error) {
 	client := sysclient.NewSysClient(m.cli.Conn())
 	return client.RedisGet(ctx, in, opts...)
+}
+
+// Kafka生产者演示请求
+func (m *defaultSys) KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.KafkaProducer(ctx, in, opts...)
+}
+
+// Kafka消费者演示请求
+func (m *defaultSys) KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.KafkaConsumer(ctx, in, opts...)
 }

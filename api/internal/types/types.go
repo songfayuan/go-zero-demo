@@ -75,3 +75,16 @@ type ApiRedisResp struct {
 type ApiRedisGetReq struct {
 	Key string `form:"key"`
 }
+
+type ApiKafkaReq struct {
+	Name     string `json:"name"`
+	NickName string `json:"nickName"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+}
+
+type ApiKafkaResp struct {
+	Code    int64       `json:"code"`
+	Message string      `json:"message"`
+	Data    ApiKafkaReq `json:"data"`
+}

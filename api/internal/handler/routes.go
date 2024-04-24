@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	kafkatest "go-zero-demo/api/internal/handler/kafka/test"
 	redistest "go-zero-demo/api/internal/handler/redis/test"
 	sysuser "go-zero-demo/api/internal/handler/sys/user"
 	"go-zero-demo/api/internal/svc"
@@ -52,5 +53,21 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/redis/test"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/kafkaProducer",
+				Handler: kafkatest.KafkaProducerHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/kafkaConsumer",
+				Handler: kafkatest.KafkaConsumerHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/kafka/test"),
 	)
 }

@@ -1,5 +1,6 @@
 import "sys/user.api"
 import "redis/redis.api"
+import "kafka/kafka.api"
 
 info(
 	title : "Golang学习项目"

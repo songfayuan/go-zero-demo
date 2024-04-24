@@ -19,12 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Sys_UserInfo_FullMethodName    = "/sysclient.Sys/UserInfo"
-	Sys_UserAdd_FullMethodName     = "/sysclient.Sys/UserAdd"
-	Sys_RedisAdd_FullMethodName    = "/sysclient.Sys/RedisAdd"
-	Sys_RedisDelete_FullMethodName = "/sysclient.Sys/RedisDelete"
-	Sys_RedisUpdate_FullMethodName = "/sysclient.Sys/RedisUpdate"
-	Sys_RedisGet_FullMethodName    = "/sysclient.Sys/RedisGet"
+	Sys_UserInfo_FullMethodName      = "/sysclient.Sys/UserInfo"
+	Sys_UserAdd_FullMethodName       = "/sysclient.Sys/UserAdd"
+	Sys_RedisAdd_FullMethodName      = "/sysclient.Sys/RedisAdd"
+	Sys_RedisDelete_FullMethodName   = "/sysclient.Sys/RedisDelete"
+	Sys_RedisUpdate_FullMethodName   = "/sysclient.Sys/RedisUpdate"
+	Sys_RedisGet_FullMethodName      = "/sysclient.Sys/RedisGet"
+	Sys_KafkaProducer_FullMethodName = "/sysclient.Sys/KafkaProducer"
+	Sys_KafkaConsumer_FullMethodName = "/sysclient.Sys/KafkaConsumer"
 )
 
 // SysClient is the client API for Sys service.
@@ -38,6 +40,10 @@ type SysClient interface {
 	RedisDelete(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
 	RedisUpdate(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
 	RedisGet(ctx context.Context, in *RedisReq, opts ...grpc.CallOption) (*RedisResp, error)
+	// Kafka生产者演示请求
+	KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error)
+	// Kafka消费者演示请求
+	KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error)
 }
 
 type sysClient struct {
@@ -102,6 +108,24 @@ func (c *sysClient) RedisGet(ctx context.Context, in *RedisReq, opts ...grpc.Cal
 	return out, nil
 }
 
+func (c *sysClient) KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error) {
+	out := new(KafkaResp)
+	err := c.cc.Invoke(ctx, Sys_KafkaProducer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error) {
+	out := new(KafkaResp)
+	err := c.cc.Invoke(ctx, Sys_KafkaConsumer_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SysServer is the server API for Sys service.
 // All implementations must embed UnimplementedSysServer
 // for forward compatibility
@@ -113,6 +137,10 @@ type SysServer interface {
 	RedisDelete(context.Context, *RedisReq) (*RedisResp, error)
 	RedisUpdate(context.Context, *RedisReq) (*RedisResp, error)
 	RedisGet(context.Context, *RedisReq) (*RedisResp, error)
+	// Kafka生产者演示请求
+	KafkaProducer(context.Context, *KafkaReq) (*KafkaResp, error)
+	// Kafka消费者演示请求
+	KafkaConsumer(context.Context, *Empty) (*KafkaResp, error)
 	mustEmbedUnimplementedSysServer()
 }
 
@@ -137,6 +165,12 @@ func (UnimplementedSysServer) RedisUpdate(context.Context, *RedisReq) (*RedisRes
 }
 func (UnimplementedSysServer) RedisGet(context.Context, *RedisReq) (*RedisResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RedisGet not implemented")
+}
+func (UnimplementedSysServer) KafkaProducer(context.Context, *KafkaReq) (*KafkaResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KafkaProducer not implemented")
+}
+func (UnimplementedSysServer) KafkaConsumer(context.Context, *Empty) (*KafkaResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method KafkaConsumer not implemented")
 }
 func (UnimplementedSysServer) mustEmbedUnimplementedSysServer() {}
 
@@ -259,6 +293,42 @@ func _Sys_RedisGet_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sys_KafkaProducer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KafkaReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).KafkaProducer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_KafkaProducer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).KafkaProducer(ctx, req.(*KafkaReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_KafkaConsumer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).KafkaConsumer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_KafkaConsumer_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).KafkaConsumer(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Sys_ServiceDesc is the grpc.ServiceDesc for Sys service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -289,6 +359,14 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RedisGet",
 			Handler:    _Sys_RedisGet_Handler,
+		},
+		{
+			MethodName: "KafkaProducer",
+			Handler:    _Sys_KafkaProducer_Handler,
+		},
+		{
+			MethodName: "KafkaConsumer",
+			Handler:    _Sys_KafkaConsumer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

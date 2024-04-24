@@ -3,6 +3,7 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
+	"go-zero-demo/common/task/kafkaconf"
 	"go-zero-demo/rpc/model/sysmodel"
 	"go-zero-demo/rpc/sys/internal/config"
 )
@@ -10,6 +11,8 @@ import (
 type ServiceContext struct {
 	Config      config.Config
 	RedisClient *redis.Redis
+
+	KafkaConf *kafkaconf.Conf
 
 	UserModel sysmodel.SysUserModel
 }
@@ -27,6 +30,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:      c,
 		RedisClient: redis.MustNewRedis(conf),
+
+		KafkaConf: &c.KafkaConf,
 
 		UserModel: sysmodel.NewSysUserModel(sqlConn),
 	}

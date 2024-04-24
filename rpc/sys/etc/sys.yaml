@@ -12,9 +12,20 @@ Mysql:
 # Redis配置
 RedisConf:
   Host: 192.168.2.204:6379
+#  Host: 127.0.0.1:6379
   Type: node
   Pass: "qkgxChxNkCwK"
+#  Pass: "123456"
   Tls: false
+
+# Kafka配置
+KafkaConf:
+  Host: 192.168.2.204:9092
+  Brokers:
+    - 192.168.2.204:9092
+  Group: "consumer-group-id"
+  Topic: kafka-test-topic3
+  Consumers: 5
 
 Log:
   #日志格式使用行模式
