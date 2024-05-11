@@ -14,3 +14,8 @@
 教程博客地址：[go-zero整合Kafka实现消息生产和消费](https://blog.csdn.net/u011019141/article/details/138157030)
 
 教程源码分支：3.zero整合单机kafka
+
+### go-zero整合asynq实现分布式定时任务
+教程博客地址：[go-zero整合asynq实现分布式定时任务](https://blog.csdn.net/u011019141/article/details/138723465)
+
+教程源码分支：4.zero整合asynq定时任务
