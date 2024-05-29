@@ -88,3 +88,20 @@ type ApiKafkaResp struct {
 	Message string      `json:"message"`
 	Data    ApiKafkaReq `json:"data"`
 }
+
+type ApiClickhouseReq struct {
+	Name     string `json:"name"`
+	NickName string `json:"nickName"`
+	Password string `json:"password,optional"`
+	Email    string `json:"email"`
+}
+
+type ApiClickhouseResp struct {
+	Code    int64            `json:"code"`
+	Message string           `json:"message"`
+	Data    ApiClickhouseReq `json:"data"`
+}
+
+type ApiClickhouseGetReq struct {
+	Key string `form:"key"`
+}

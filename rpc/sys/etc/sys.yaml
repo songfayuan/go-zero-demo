@@ -26,6 +26,21 @@ KafkaConf:
   Group: "consumer-group-id"
   Topic: kafka-test-topic3
   Consumers: 5
+  
+# ClickHouse配置
+ClickHouse:
+  Addr:
+    - "192.168.2.204:9000"
+  Auth:
+    Database: dsms
+    Username: default
+    Password:
+  Table: http_capture
+  Interval: 3
+  MaxNum: 1000
+  MaxChunkBytes: 10485760
+  Debug: false
+  Datasource: clickhouse://default:@192.168.2.204:9000/dsms?debug=false
 
 Log:
   #日志格式使用行模式

@@ -1,0 +1,57 @@
+syntax = "v1"
+
+info(
+    title: "clickhouse操作相关"
+    desc: "clickhouse操作相关"
+    author: "宋发元"
+)
+
+type (
+    ApiClickhouseReq {
+        Name     string `json:"name"`
+        NickName string `json:"nickName"`
+        Password string `json:"password,optional"`
+        Email    string `json:"email"`
+    }
+
+    ApiClickhouseResp {
+        Code    int64       `json:"code"`
+        Message string      `json:"message"`
+        Data    ApiClickhouseReq `json:"data"`
+    }
+
+    ApiClickhouseGetReq {
+        Key string `form:"key"`
+    }
+)
+
+@server (
+    group : clickhouse/test
+    prefix : /clickhouse/test
+)
+
+service admin-api{
+    @doc(
+        summary : "Clickhouse新增数据"
+    )
+    @handler ClickhouseAdd
+    post /clickhouseAdd(ApiClickhouseReq)returns(ApiClickhouseResp)
+
+    @doc(
+        summary : "Clickhouse删除数据"
+    )
+    @handler ClickhouseDelete
+    post /clickhouseDelete(ApiClickhouseReq)returns(ApiClickhouseResp)
+
+    @doc(
+        summary : "Clickhouse修改数据"
+    )
+    @handler ClickhouseUpdate
+    post /clickhouseUpdate(ApiClickhouseReq)returns(ApiClickhouseResp)
+
+    @doc(
+        summary : "Clickhouse查询数据"
+    )
+    @handler ClickhouseGet
+    get /clickhouseGet(ApiClickhouseGetReq)returns(ApiClickhouseResp)
+}

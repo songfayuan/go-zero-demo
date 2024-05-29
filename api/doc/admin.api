@@ -1,6 +1,7 @@
 import "sys/user.api"
 import "redis/redis.api"
 import "kafka/kafka.api"
+import "clickhouse/clickhouse.api"
 
 info(
 	title : "Golang学习项目"

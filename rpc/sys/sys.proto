@@ -74,6 +74,20 @@ message  KafkaResp{
 message Empty {
 }
 
+message ClickhouseReq{
+  string name = 1;
+  string nickName = 2;
+  string password = 3;
+  string email = 4;
+}
+
+message  ClickhouseResp{
+  string name = 1;
+  string nickName = 2;
+  string password = 3;
+  string email = 4;
+}
+
 service Sys{
   rpc UserInfo(InfoReq)returns(InfoResp);
   rpc UserAdd(UserAddReq)returns(UserAddResp);
@@ -86,4 +100,10 @@ service Sys{
   rpc KafkaProducer(KafkaReq)returns(KafkaResp);
   //Kafka消费者演示请求
   rpc KafkaConsumer(Empty)returns(KafkaResp);
+
+  // clickhouse增删改查
+  rpc ClickhouseAdd(ClickhouseReq)returns(ClickhouseResp);
+  rpc ClickhouseDelete(ClickhouseReq)returns(ClickhouseResp);
+  rpc ClickhouseUpdate(ClickhouseReq)returns(ClickhouseResp);
+  rpc ClickhouseGet(ClickhouseReq)returns(ClickhouseResp);
 }

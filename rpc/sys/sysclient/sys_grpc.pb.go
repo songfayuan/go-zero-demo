@@ -19,14 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Sys_UserInfo_FullMethodName      = "/sysclient.Sys/UserInfo"
-	Sys_UserAdd_FullMethodName       = "/sysclient.Sys/UserAdd"
-	Sys_RedisAdd_FullMethodName      = "/sysclient.Sys/RedisAdd"
-	Sys_RedisDelete_FullMethodName   = "/sysclient.Sys/RedisDelete"
-	Sys_RedisUpdate_FullMethodName   = "/sysclient.Sys/RedisUpdate"
-	Sys_RedisGet_FullMethodName      = "/sysclient.Sys/RedisGet"
-	Sys_KafkaProducer_FullMethodName = "/sysclient.Sys/KafkaProducer"
-	Sys_KafkaConsumer_FullMethodName = "/sysclient.Sys/KafkaConsumer"
+	Sys_UserInfo_FullMethodName         = "/sysclient.Sys/UserInfo"
+	Sys_UserAdd_FullMethodName          = "/sysclient.Sys/UserAdd"
+	Sys_RedisAdd_FullMethodName         = "/sysclient.Sys/RedisAdd"
+	Sys_RedisDelete_FullMethodName      = "/sysclient.Sys/RedisDelete"
+	Sys_RedisUpdate_FullMethodName      = "/sysclient.Sys/RedisUpdate"
+	Sys_RedisGet_FullMethodName         = "/sysclient.Sys/RedisGet"
+	Sys_KafkaProducer_FullMethodName    = "/sysclient.Sys/KafkaProducer"
+	Sys_KafkaConsumer_FullMethodName    = "/sysclient.Sys/KafkaConsumer"
+	Sys_ClickhouseAdd_FullMethodName    = "/sysclient.Sys/ClickhouseAdd"
+	Sys_ClickhouseDelete_FullMethodName = "/sysclient.Sys/ClickhouseDelete"
+	Sys_ClickhouseUpdate_FullMethodName = "/sysclient.Sys/ClickhouseUpdate"
+	Sys_ClickhouseGet_FullMethodName    = "/sysclient.Sys/ClickhouseGet"
 )
 
 // SysClient is the client API for Sys service.
@@ -44,6 +48,11 @@ type SysClient interface {
 	KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error)
 	// Kafka消费者演示请求
 	KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error)
+	// clickhouse增删改查
+	ClickhouseAdd(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+	ClickhouseDelete(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+	ClickhouseUpdate(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+	ClickhouseGet(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
 }
 
 type sysClient struct {
@@ -126,6 +135,42 @@ func (c *sysClient) KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.C
 	return out, nil
 }
 
+func (c *sysClient) ClickhouseAdd(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	out := new(ClickhouseResp)
+	err := c.cc.Invoke(ctx, Sys_ClickhouseAdd_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) ClickhouseDelete(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	out := new(ClickhouseResp)
+	err := c.cc.Invoke(ctx, Sys_ClickhouseDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) ClickhouseUpdate(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	out := new(ClickhouseResp)
+	err := c.cc.Invoke(ctx, Sys_ClickhouseUpdate_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysClient) ClickhouseGet(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	out := new(ClickhouseResp)
+	err := c.cc.Invoke(ctx, Sys_ClickhouseGet_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SysServer is the server API for Sys service.
 // All implementations must embed UnimplementedSysServer
 // for forward compatibility
@@ -141,6 +186,11 @@ type SysServer interface {
 	KafkaProducer(context.Context, *KafkaReq) (*KafkaResp, error)
 	// Kafka消费者演示请求
 	KafkaConsumer(context.Context, *Empty) (*KafkaResp, error)
+	// clickhouse增删改查
+	ClickhouseAdd(context.Context, *ClickhouseReq) (*ClickhouseResp, error)
+	ClickhouseDelete(context.Context, *ClickhouseReq) (*ClickhouseResp, error)
+	ClickhouseUpdate(context.Context, *ClickhouseReq) (*ClickhouseResp, error)
+	ClickhouseGet(context.Context, *ClickhouseReq) (*ClickhouseResp, error)
 	mustEmbedUnimplementedSysServer()
 }
 
@@ -171,6 +221,18 @@ func (UnimplementedSysServer) KafkaProducer(context.Context, *KafkaReq) (*KafkaR
 }
 func (UnimplementedSysServer) KafkaConsumer(context.Context, *Empty) (*KafkaResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method KafkaConsumer not implemented")
+}
+func (UnimplementedSysServer) ClickhouseAdd(context.Context, *ClickhouseReq) (*ClickhouseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClickhouseAdd not implemented")
+}
+func (UnimplementedSysServer) ClickhouseDelete(context.Context, *ClickhouseReq) (*ClickhouseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClickhouseDelete not implemented")
+}
+func (UnimplementedSysServer) ClickhouseUpdate(context.Context, *ClickhouseReq) (*ClickhouseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClickhouseUpdate not implemented")
+}
+func (UnimplementedSysServer) ClickhouseGet(context.Context, *ClickhouseReq) (*ClickhouseResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClickhouseGet not implemented")
 }
 func (UnimplementedSysServer) mustEmbedUnimplementedSysServer() {}
 
@@ -329,6 +391,78 @@ func _Sys_KafkaConsumer_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Sys_ClickhouseAdd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClickhouseReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).ClickhouseAdd(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_ClickhouseAdd_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).ClickhouseAdd(ctx, req.(*ClickhouseReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_ClickhouseDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClickhouseReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).ClickhouseDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_ClickhouseDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).ClickhouseDelete(ctx, req.(*ClickhouseReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_ClickhouseUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClickhouseReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).ClickhouseUpdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_ClickhouseUpdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).ClickhouseUpdate(ctx, req.(*ClickhouseReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Sys_ClickhouseGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClickhouseReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysServer).ClickhouseGet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Sys_ClickhouseGet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysServer).ClickhouseGet(ctx, req.(*ClickhouseReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Sys_ServiceDesc is the grpc.ServiceDesc for Sys service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -367,6 +501,22 @@ var Sys_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "KafkaConsumer",
 			Handler:    _Sys_KafkaConsumer_Handler,
+		},
+		{
+			MethodName: "ClickhouseAdd",
+			Handler:    _Sys_ClickhouseAdd_Handler,
+		},
+		{
+			MethodName: "ClickhouseDelete",
+			Handler:    _Sys_ClickhouseDelete_Handler,
+		},
+		{
+			MethodName: "ClickhouseUpdate",
+			Handler:    _Sys_ClickhouseUpdate_Handler,
+		},
+		{
+			MethodName: "ClickhouseGet",
+			Handler:    _Sys_ClickhouseGet_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

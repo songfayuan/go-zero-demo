@@ -64,3 +64,24 @@ func (s *SysServer) KafkaConsumer(ctx context.Context, in *sysclient.Empty) (*sy
 	l := logic.NewKafkaConsumerLogic(ctx, s.svcCtx)
 	return l.KafkaConsumer(in)
 }
+
+// clickhouse增删改查
+func (s *SysServer) ClickhouseAdd(ctx context.Context, in *sysclient.ClickhouseReq) (*sysclient.ClickhouseResp, error) {
+	l := logic.NewClickhouseAddLogic(ctx, s.svcCtx)
+	return l.ClickhouseAdd(in)
+}
+
+func (s *SysServer) ClickhouseDelete(ctx context.Context, in *sysclient.ClickhouseReq) (*sysclient.ClickhouseResp, error) {
+	l := logic.NewClickhouseDeleteLogic(ctx, s.svcCtx)
+	return l.ClickhouseDelete(in)
+}
+
+func (s *SysServer) ClickhouseUpdate(ctx context.Context, in *sysclient.ClickhouseReq) (*sysclient.ClickhouseResp, error) {
+	l := logic.NewClickhouseUpdateLogic(ctx, s.svcCtx)
+	return l.ClickhouseUpdate(in)
+}
+
+func (s *SysServer) ClickhouseGet(ctx context.Context, in *sysclient.ClickhouseReq) (*sysclient.ClickhouseResp, error) {
+	l := logic.NewClickhouseGetLogic(ctx, s.svcCtx)
+	return l.ClickhouseGet(in)
+}

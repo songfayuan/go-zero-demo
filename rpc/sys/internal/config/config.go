@@ -20,4 +20,30 @@ type Config struct {
 	}
 
 	KafkaConf kafkaconf.Conf
+
+	ClickHouse ClickHouseConf
+}
+
+type ClickHouseAuthConf struct {
+	Database string
+	Username string
+	Password string `json:",optional"`
+}
+
+type ClickHouseConf struct {
+	Addr []string
+	Auth ClickHouseAuthConf
+	Opt1 struct {
+		MaxIdleConns int `json:",optional"`
+		MaxOpenConns int `json:",optional"`
+	} `json:",optional"`
+	Opt2 struct {
+		MaxIdleConns int `json:",optional"`
+		MaxOpenConns int `json:",optional"`
+	} `json:",optional"`
+	Table   string
+	Columns []string `json:",optional"`
+	Debug   bool     `json:",default=false"`
+
+	Datasource string `json:",optional,default="`
 }

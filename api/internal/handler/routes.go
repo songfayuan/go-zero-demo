@@ -4,6 +4,7 @@ package handler
 import (
 	"net/http"
 
+	clickhousetest "go-zero-demo/api/internal/handler/clickhouse/test"
 	kafkatest "go-zero-demo/api/internal/handler/kafka/test"
 	redistest "go-zero-demo/api/internal/handler/redis/test"
 	sysuser "go-zero-demo/api/internal/handler/sys/user"
@@ -69,5 +70,31 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/kafka/test"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/clickhouseAdd",
+				Handler: clickhousetest.ClickhouseAddHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/clickhouseDelete",
+				Handler: clickhousetest.ClickhouseDeleteHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/clickhouseUpdate",
+				Handler: clickhousetest.ClickhouseUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/clickhouseGet",
+				Handler: clickhousetest.ClickhouseGetHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/clickhouse/test"),
 	)
 }

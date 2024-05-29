@@ -13,16 +13,18 @@ import (
 )
 
 type (
-	Empty        = sysclient.Empty
-	InfoReq      = sysclient.InfoReq
-	InfoResp     = sysclient.InfoResp
-	KafkaReq     = sysclient.KafkaReq
-	KafkaResp    = sysclient.KafkaResp
-	MenuListTree = sysclient.MenuListTree
-	RedisReq     = sysclient.RedisReq
-	RedisResp    = sysclient.RedisResp
-	UserAddReq   = sysclient.UserAddReq
-	UserAddResp  = sysclient.UserAddResp
+	ClickhouseReq  = sysclient.ClickhouseReq
+	ClickhouseResp = sysclient.ClickhouseResp
+	Empty          = sysclient.Empty
+	InfoReq        = sysclient.InfoReq
+	InfoResp       = sysclient.InfoResp
+	KafkaReq       = sysclient.KafkaReq
+	KafkaResp      = sysclient.KafkaResp
+	MenuListTree   = sysclient.MenuListTree
+	RedisReq       = sysclient.RedisReq
+	RedisResp      = sysclient.RedisResp
+	UserAddReq     = sysclient.UserAddReq
+	UserAddResp    = sysclient.UserAddResp
 
 	Sys interface {
 		UserInfo(ctx context.Context, in *InfoReq, opts ...grpc.CallOption) (*InfoResp, error)
@@ -36,6 +38,11 @@ type (
 		KafkaProducer(ctx context.Context, in *KafkaReq, opts ...grpc.CallOption) (*KafkaResp, error)
 		// Kafka消费者演示请求
 		KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error)
+		// clickhouse增删改查
+		ClickhouseAdd(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+		ClickhouseDelete(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+		ClickhouseUpdate(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
+		ClickhouseGet(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error)
 	}
 
 	defaultSys struct {
@@ -90,4 +97,25 @@ func (m *defaultSys) KafkaProducer(ctx context.Context, in *KafkaReq, opts ...gr
 func (m *defaultSys) KafkaConsumer(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*KafkaResp, error) {
 	client := sysclient.NewSysClient(m.cli.Conn())
 	return client.KafkaConsumer(ctx, in, opts...)
+}
+
+// clickhouse增删改查
+func (m *defaultSys) ClickhouseAdd(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.ClickhouseAdd(ctx, in, opts...)
+}
+
+func (m *defaultSys) ClickhouseDelete(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.ClickhouseDelete(ctx, in, opts...)
+}
+
+func (m *defaultSys) ClickhouseUpdate(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.ClickhouseUpdate(ctx, in, opts...)
+}
+
+func (m *defaultSys) ClickhouseGet(ctx context.Context, in *ClickhouseReq, opts ...grpc.CallOption) (*ClickhouseResp, error) {
+	client := sysclient.NewSysClient(m.cli.Conn())
+	return client.ClickhouseGet(ctx, in, opts...)
 }
