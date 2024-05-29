@@ -19,3 +19,8 @@
 教程博客地址：[go-zero整合asynq实现分布式定时任务](https://blog.csdn.net/u011019141/article/details/138723465)
 
 教程源码分支：4.zero整合asynq定时任务
+
+### go-zero整合单机版ClickHouse并实现增删改查
+教程博客地址：[go-zero整合单机版ClickHouse并实现增删改查](https://blog.csdn.net/u011019141/article/details/139290825)
+
+教程源码分支：5.zero整合单机ClickHouse
