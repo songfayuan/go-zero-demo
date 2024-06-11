@@ -24,3 +24,8 @@
 教程博客地址：[go-zero整合单机版ClickHouse并实现增删改查](https://blog.csdn.net/u011019141/article/details/139290825)
 
 教程源码分支：5.zero整合单机ClickHouse
+
+### go-zero整合Excelize并实现Excel导入导出
+教程博客地址：[go-zero整合Excelize并实现Excel导入导出](https://blog.csdn.net/u011019141/article/details/139604779)
+
+教程源码分支：6.zero整合Excelize操作Excel
