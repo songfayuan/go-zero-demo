@@ -105,3 +105,30 @@ type ApiClickhouseResp struct {
 type ApiClickhouseGetReq struct {
 	Key string `form:"key"`
 }
+
+type ExcelImportReq struct {
+	DeptId string      `json:"deptId"`        // 部门id（Content-Type: form-data）
+	File   interface{} `json:"file,optional"` // excel文件（Content-Type: form-data）
+}
+
+type ExcelImportData struct {
+	Total   int64  `json:"total"`   // 导入总数
+	Success int64  `json:"success"` // 导入成功数
+	Msg     string `json:"msg"`     // 提示信息
+}
+
+type ExcelImportResp struct {
+	Code    int64           `json:"code"`
+	Message string          `json:"message"`
+	Data    ExcelImportData `json:"data"`
+}
+
+type ExcelExportlReq struct {
+	TimeStart string `form:"timeStart,optional"` // 时间（开始） yyyy-mm-dd
+	TimeEnd   string `form:"timeEnd,optional"`   // 时间（结束） yyyy-mm-dd
+}
+
+type DefaultResponse struct {
+	Code    int64  `json:"code,default=200"`
+	Message string `json:"message,default=操作成功"`
+}

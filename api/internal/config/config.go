@@ -13,4 +13,13 @@ type Config struct {
 	Mysql struct {
 		Datasource string
 	}
+
+	UploadFile UploadFile
+}
+
+type UploadFile struct {
+	MaxFileNum   int64
+	MaxFileSize  int64
+	SavePath     string
+	TemplatePath string
 }

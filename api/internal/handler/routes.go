@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	clickhousetest "go-zero-demo/api/internal/handler/clickhouse/test"
+	exceltest "go-zero-demo/api/internal/handler/excel/test"
 	kafkatest "go-zero-demo/api/internal/handler/kafka/test"
 	redistest "go-zero-demo/api/internal/handler/redis/test"
 	sysuser "go-zero-demo/api/internal/handler/sys/user"
@@ -96,5 +97,26 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/clickhouse/test"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodGet,
+				Path:    "/excel/templateDownload",
+				Handler: exceltest.ExcelTemplateDownloadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/excel/excelImport",
+				Handler: exceltest.ExcelImportHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/excel/excelExport",
+				Handler: exceltest.ExcelExportHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/excel/test"),
 	)
 }

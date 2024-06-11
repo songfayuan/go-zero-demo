@@ -13,6 +13,13 @@ SysRpc:
       - 192.168.2.204:2379
     Key: sysa.rpc
 
+#文件
+UploadFile:
+  MaxFileNum: 100
+  MaxFileSize: 104857600  # 100MB
+  SavePath: template/uploads/
+  TemplatePath: template/excel/
+
 Log:
   #日志格式使用行模式
   Encoding: plain
