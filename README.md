@@ -1,7 +1,12 @@
 ## go-zero学习教程
+这算是比较完整的入门教程，跟着教程，照葫芦画瓢，多练习几次，自然就记住了。
+
+### golang入门教程（必看）
+新手的话，你得把这个刷完了再继续刷其他的。
+[Go 语言教程](https://www.runoob.com/go/go-tutorial.html)
 
 ### go-zero微服务入门教程
-教程博客地址：[go-zero微服务入门教程](https://blog.csdn.net/u011019141/article/details/136233473) 
+教程博客地址：[go-zero微服务入门教程](https://blog.csdn.net/u011019141/article/details/136233473)
 
 教程源码分支：1.zero入门
 
