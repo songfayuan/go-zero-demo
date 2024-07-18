@@ -138,7 +138,7 @@ func (m *customSysUserModel) FindRowsByQuery(ctx context.Context, rowBuilder sq.
 	}
 
 	var resp []*SysUser
-	err = m.conn.QueryRowCtx(ctx, &resp, query, values...)
+	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
 		return resp, nil
