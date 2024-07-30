@@ -107,6 +107,26 @@ func insertTableAt(doc *document.Document, tag string) error {
 				}
 			}
 
+			//分隔不同表格
+			//doc.InsertParagraphAfter(para).AddRun().AddText("--------------")
+			doc.InsertParagraphAfter(para).AddRun()
+
+			// 创建并配置表格
+			table = doc.InsertTableAfter(para)      // 在标签段落之后插入表格
+			table.Properties().SetWidthPercent(100) // 设置表格宽度为100%
+			borders = table.Properties().Borders()
+			borders.SetAll(wml.ST_BorderSingle, color.Black, measurement.Dxa) // 设置所有边框为单线黑色
+
+			for i := 0; i < 3; i++ { // 创建表格行和单元格
+				row := table.AddRow()
+				for j := 0; j < 3; j++ {
+					cell := row.AddCell()
+					cellPara := cell.AddParagraph()
+					cellRun := cellPara.AddRun()
+					cellRun.AddText(fmt.Sprintf("单元格 %d-%d", i+1, j+1))
+				}
+			}
+
 			// 移除标签段落
 			replaceParagraphWithTable(&para, tag) // 替换标签段落为表格
 			// 删除段落
