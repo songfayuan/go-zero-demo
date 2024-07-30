@@ -17,7 +17,7 @@ import (
 
 func main() {
 	// 定义文档路径和图表文件路径
-	docPath := "/Users/songfayuan/Downloads/template.docx"
+	docPath := "_examples/word-template/template.docx"
 	chartFile := "/Users/songfayuan/Downloads/123456.PNG"
 	updatedDocPath := "/Users/songfayuan/Downloads/updated_demo.docx"
 
@@ -46,6 +46,11 @@ func main() {
 	// 在指定标签处插入图表
 	if err := insertImageAt(doc, chartFile, "{{tubiao}}"); err != nil {
 		log.Fatalf("插入图表时出错: %v", err)
+	}
+
+	// 删除{{a}}到{{b}}之间的段落
+	if err := removeParagraphsBetweenTags(doc, "{{a}}", "{{b}}"); err != nil {
+		log.Fatalf("删除段落时出错: %v", err)
 	}
 
 	// 保存更新后的Word文档
@@ -197,4 +202,38 @@ func replaceParagraphWithTable(para *document.Paragraph, tag string) {
 			break
 		}
 	}
+}
+
+// 删除两个标签之间的段落
+func removeParagraphsBetweenTags(doc *document.Document, startTag, endTag string) error {
+	paras := doc.Paragraphs()
+	startIndex, endIndex := -1, -1
+
+	// 找到包含startTag和endTag的段落索引
+	for i, para := range paras {
+		if paraContainsTag(&para, startTag) {
+			startIndex = i
+		}
+		if paraContainsTag(&para, endTag) {
+			endIndex = i
+			break
+		}
+	}
+
+	if startIndex == -1 {
+		return fmt.Errorf("未找到标签 %s", startTag)
+	}
+	if endIndex == -1 {
+		return fmt.Errorf("未找到标签 %s", endTag)
+	}
+	if startIndex >= endIndex {
+		return fmt.Errorf("标签 %s 和 %s 之间的顺序不正确", startTag, endTag)
+	}
+
+	// 删除startTag和endTag之间的段落
+	for i := startIndex; i <= endIndex; i++ {
+		doc.RemoveParagraph(paras[i])
+	}
+
+	return nil
 }
