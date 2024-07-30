@@ -34,3 +34,10 @@
 教程博客地址：[go-zero整合Excelize并实现Excel导入导出](https://blog.csdn.net/u011019141/article/details/139604779)
 
 教程源码分支：6.zero整合Excelize操作Excel
+
+### Golang处理Word文档模板实现标签填充|表格插入|图标绘制和插入
+教程博客地址：[Golang处理Word文档模板实现标签填充|表格插入|图标绘制和插入](https://blog.csdn.net/u011019141/article/details/140788882)
+
+教程源码分支：master 分支（_examples/word-template/fill-word-template.go）
+
+持续更新中....
