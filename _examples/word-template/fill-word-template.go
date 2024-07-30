@@ -53,6 +53,11 @@ func main() {
 		log.Fatalf("删除段落时出错: %v", err)
 	}
 
+	// 删除指定标签
+	if err := removeParagraphWithTag(doc, "{{shanchu}}"); err != nil {
+		log.Fatalf("删除指定标签时出错: %v", err)
+	}
+
 	// 保存更新后的Word文档
 	if err := doc.SaveToFile(updatedDocPath); err != nil {
 		log.Fatalf("无法保存文档: %v", err)
@@ -236,4 +241,16 @@ func removeParagraphsBetweenTags(doc *document.Document, startTag, endTag string
 	}
 
 	return nil
+}
+
+// 删除指定标签段落
+func removeParagraphWithTag(doc *document.Document, tag string) error {
+	paras := doc.Paragraphs()
+	for _, para := range paras {
+		if paraContainsTag(&para, tag) {
+			doc.RemoveParagraph(para)
+			return nil
+		}
+	}
+	return fmt.Errorf("未找到标签 %s", tag)
 }
