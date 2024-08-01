@@ -29,7 +29,7 @@ type (
 		CountBuilder(field string) sq.SelectBuilder
 		FindCount(ctx context.Context, countBuilder sq.SelectBuilder) (int64, error)
 
-		FindAll(ctx context.Context, rowBuilder sq.SelectBuilder, orderBy string) ([]*SysUserList, error)
+		FindAll(ctx context.Context, rowBuilder sq.SelectBuilder, orderBy string) ([]*SysUser, error)
 
 		TableName() string
 	}
@@ -81,7 +81,7 @@ func (m *customSysUserModel) TableName() string {
 	return m.table
 }
 
-func (m *customSysUserModel) FindAll(ctx context.Context, rowBuilder sq.SelectBuilder, orderBy string) ([]*SysUserList, error) {
+func (m *customSysUserModel) FindAll(ctx context.Context, rowBuilder sq.SelectBuilder, orderBy string) ([]*SysUser, error) {
 	if orderBy == "" {
 		rowBuilder = rowBuilder.OrderBy("id AEC")
 	} else {
@@ -93,7 +93,7 @@ func (m *customSysUserModel) FindAll(ctx context.Context, rowBuilder sq.SelectBu
 		return nil, err
 	}
 
-	var resp []*SysUserList
+	var resp []*SysUser
 	err = m.conn.QueryRowsCtx(ctx, &resp, query, values...)
 	switch err {
 	case nil:
