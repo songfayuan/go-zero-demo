@@ -179,6 +179,18 @@ func insertImageAt(doc *document.Document, imageBuffer *bytes.Buffer, tag string
 				return fmt.Errorf("无法将图片添加到文档: %v", err)
 			}
 
+			// 获取图片的原始宽度和高度
+			imgWidth := img.Size.X
+			imgHeight := img.Size.Y
+
+			// 计算缩放比例，确保宽高比保持一致，且图片最大宽度和高度为6英寸
+			maxSize := measurement.Inch * 6
+			scale := math.Min(float64(maxSize)/float64(imgWidth), float64(maxSize)/float64(imgHeight))
+
+			// 缩放图片尺寸
+			newWidth := measurement.Distance(float64(imgWidth) * scale)
+			newHeight := measurement.Distance(float64(imgHeight) * scale)
+
 			// 创建新的段落和运行以插入图表
 			newPara := doc.InsertParagraphAfter(para) // 在标签段落之后插入新段落
 			run := newPara.AddRun()
@@ -188,7 +200,7 @@ func insertImageAt(doc *document.Document, imageBuffer *bytes.Buffer, tag string
 			if err != nil {
 				return fmt.Errorf("插入图片时出错: %v", err)
 			}
-			imgInl.SetSize(6*measurement.Inch, 4*measurement.Inch) // 设置图片尺寸为6x4英寸
+			imgInl.SetSize(newWidth, newHeight) // 设置图片尺寸为等比缩小后的尺寸
 
 			// 移除标签段落
 			replaceParagraphWithTable(&para, tag) // 替换标签段落为图表
@@ -346,8 +358,11 @@ func createLineChart() (*bytes.Buffer, error) {
 // 创建柱状图并将其存储到缓存中
 func createBarChart() (*bytes.Buffer, error) {
 	const (
-		width  = 900 // 画布宽度
-		height = 700 // 画布高度
+		width      = 900  // 画布宽度
+		height     = 700  // 画布高度
+		barWidth   = 60   // 柱子的固定宽度
+		barSpacing = 60.0 // 柱子之间的间隔
+		margin     = 50   // 边距
 	)
 
 	// 数据
@@ -364,14 +379,20 @@ func createBarChart() (*bytes.Buffer, error) {
 		{"户籍信息", 45},
 	}
 
+	// 计算数据中的最大值
+	var maxValue float64
+	for _, d := range data {
+		if d.value > maxValue {
+			maxValue = d.value
+		}
+	}
+	// 设置纵坐标最大值，稍微高于数据中的最大值，保证柱子不贴顶
+	maxValue *= 1.1
+
 	// 创建画布
 	dc := gg.NewContext(width, height)
 	dc.SetRGB(1, 1, 1) // 背景色为白色
 	dc.Clear()
-
-	barWidth := float64(width-200) / float64(len(data)) // 调整柱子的宽度
-	barSpacing := 10.0                                  // 增加柱子之间的间隔
-	maxValue := 50.0                                    // 纵坐标最大值
 
 	// 定义颜色
 	colors := []struct{ R, G, B float64 }{
@@ -391,29 +412,32 @@ func createBarChart() (*bytes.Buffer, error) {
 
 	// 绘制柱状图
 	for i, d := range data {
-		x := 50 + float64(i)*(barWidth+barSpacing)               // x轴起始位置
-		y := height - 50 - (d.value / maxValue * (height - 100)) // y轴起始位置减去柱子的高度
-		color := colors[i%len(colors)]                           // 循环使用颜色
+		x := margin + float64(i)*(barWidth+barSpacing)                    // x轴起始位置
+		y := height - margin - (d.value / maxValue * (height - 2*margin)) // y轴起始位置减去柱子的高度
+		color := colors[i%len(colors)]                                    // 循环使用颜色
 		dc.SetRGB(color.R, color.G, color.B)
-		dc.DrawRectangle(x, y, barWidth, (d.value / maxValue * (height - 100)))
+		dc.DrawRectangle(x, y, barWidth, (d.value / maxValue * (height - 2*margin)))
 		dc.Fill()
 	}
 
 	// 绘制坐标轴
-	dc.SetRGB(0, 0, 0)                              // 黑色
-	dc.DrawLine(50, height-50, width-50, height-50) // X轴
-	dc.DrawLine(50, height-50, 50, 50)              // Y轴
+	dc.SetRGB(0, 0, 0)                                              // 黑色
+	dc.DrawLine(margin, height-margin, width-margin, height-margin) // X轴
+	dc.DrawLine(margin, height-margin, margin, margin)              // Y轴
 	dc.Stroke()
+
+	// 计算纵坐标标签间隔
+	interval := calculateInterval(maxValue, 10)
 
 	// 添加横坐标标签
 	for i, d := range data {
-		dc.DrawStringAnchored(d.label, 50+float64(i)*(barWidth+barSpacing)+barWidth/2, height-30, 0.5, 1)
+		dc.DrawStringAnchored(d.label, margin+float64(i)*(barWidth+barSpacing)+barWidth/2, height-margin+20, 0.5, 1)
 	}
 
 	// 添加纵坐标标签
-	for i := 0; i <= int(maxValue); i += 5 {
-		y := height - 50 - (float64(i) / maxValue * (height - 100))
-		dc.DrawStringAnchored(fmt.Sprintf("%d", int(i)), 30, y, 1, 0.5)
+	for i := 0.0; i <= maxValue; i += interval {
+		y := height - margin - (i / maxValue * (height - 2*margin))
+		dc.DrawStringAnchored(fmt.Sprintf("%.0f", i), margin-10, y, 1, 0.5)
 	}
 
 	// 将图表保存到缓冲区
@@ -428,7 +452,7 @@ func createBarChart() (*bytes.Buffer, error) {
 func createPieChart() (*bytes.Buffer, error) {
 	const (
 		width  = 640
-		height = 600
+		height = 500
 		radius = 200 // 半径
 	)
 
@@ -494,4 +518,20 @@ func createPieChart() (*bytes.Buffer, error) {
 		return nil, err
 	}
 	return &buf, nil
+}
+
+// 计算适当的标签间隔
+func calculateInterval(maxValue float64, maxLabels int) float64 {
+	interval := maxValue / float64(maxLabels)
+	// 向上取整到最近的10的倍数
+	magnitude := math.Pow(10, math.Floor(math.Log10(interval)))
+	normalized := interval / magnitude
+	if normalized > 5 {
+		interval = 10 * magnitude
+	} else if normalized > 2 {
+		interval = 5 * magnitude
+	} else {
+		interval = 2 * magnitude
+	}
+	return interval
 }
